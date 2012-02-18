@@ -1,10 +1,10 @@
 import sys
 
 def startgame():
-    while (1):
-        r = raw_input(prompt)
-        if (r == "exit"):
-            return
+	while (1):
+		r = raw_input(prompt)
+		if (r == "exit"):
+			return
 
 prompt = '>> '
 
@@ -28,13 +28,13 @@ Alright %r and %r, let's get ready to rumble! The gameboard will be a %r and you
 
 while(1):
 
-    resp = raw_input("Are you brave enough? yes/no ")
-    if (resp.lower() == "yes"):
-        startgame()
-    elif (resp.lower() == "no"):
-        sys.exit()
-    else:
-        print "We do not accept players that can not answer a simple question! \n Goodbye!"
-        sys.exit()
+	resp = raw_input("Are you brave enough? yes/no ")
+	if (resp.lower() == "yes"):
+		startgame()
+	elif (resp.lower() == "no"):
+		sys.exit()
+	else:
+		print "We do not accept players that can not answer a simple question! \n Goodbye!"
+		sys.exit()
 
 
