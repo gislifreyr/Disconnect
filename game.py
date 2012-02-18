@@ -1,11 +1,11 @@
 
 
 class board:
-	def __init__(self, size='4x4'):
+	def __init__(self, size='4x4', discs=4):
 		self.size = size
 		self.board = []
 		self.UNUSED = '_'
-		self.NTOWIN = 4
+		self.NTOWIN = discs
 		self.init()
 		self.fourinarow = None
 	def init(self):
@@ -19,6 +19,10 @@ class board:
 			self.board.append(row)
 
 	def draw(self):
+		rstr = ''
+		for n in range(0, self.width):
+			rstr += ' ' + str(n) + '  '
+		print rstr
 		for row in self.board:
 			rstr = ''
 			for cell in row:
@@ -38,12 +42,9 @@ class board:
 	def play(self, symbol, col):
 		if (len(self.board[0]) <= col):
 			raise Exception("Column out of bounds");
-
-		
-
 		# Let's start at the "bottom" and work our way up
 		for n in range(self.height-1, -1, -1):
-			print "Checking [" + str(col) + "][" + str(n) + "]"
+			#print "Checking [" + str(col) + "][" + str(n) + "]"
 			if (not self.inuse(n, col)): # this cell is free, let's add the symbol and return True
 				self.board[n][col] = symbol
 				# we have successfully placed the symbol, let's check for 4-in-a-row!
@@ -57,16 +58,20 @@ class board:
 	def checkinarow(self, symbol, row, col):
 		nfound = 0
 		# case 1: check horizontally!
+		#print "base: " + str(row) + ":" + str(col)
 		start = max(col - self.NTOWIN, 0)
 		end = min(col + self.NTOWIN, self.width)
-		for i in range(start, end):
+		#print "checking: " + str(start) + " -> " + str(end)
+		for i in range(start, end): 
+			#print "check: " + str(row) + ":" + str(i) + "(" + self.board[row][i] + ")"
 			if (self.board[row][i] == symbol):
 				nfound += 1
+				if (nfound >= self.NTOWIN):
+					return symbol
 			else:
 				nfound = 0
-		if (nfound >= self.NTOWIN):
-			return symbol
 
+		#print "horizontal nfound = " + str(nfound)
 		nfound = 0
 		# case 2: check vertically!
 		start = max(row - self.NTOWIN, 0)
@@ -74,10 +79,11 @@ class board:
 		for i in range(start, end):
 			if (self.board[i][col] == symbol):
 				nfound += 1
+				if (nfound >= self.NTOWIN):
+					return symbol
 			else:
 				nfound = 0
-		if (nfound >= self.NTOWIN):
-			return symbol
+		#print "vertical nfound = " + str(nfound)
 
 		# case 3: ... diagonal something?
 		# case 4: ... diagonal something else?
