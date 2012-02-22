@@ -6,6 +6,8 @@ r = b.play('x',0)
 total = 15
 successful = 0
 
+# Testing phase 1 is to verify that a) the fourinarow variable is set only when a player wins
+# and b) that after it has been set, any attempts to play will fail
 if (not r or b.fourinarow):
 	print "1: TEST FAILED"
 else:

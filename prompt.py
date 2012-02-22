@@ -3,8 +3,7 @@ import sys,game,traceback
 def parse_input(inp):
 	return
 
-def startgame():
-	board = game.board(size,discs)
+def startgame(board):
 	rounds = 0
 	while (1):
 		rounds += 1
@@ -82,9 +81,12 @@ while (not has_discs):
 		if discs == '':
 			discs = '4' # default !
 		discs = int(discs)
+		gameboard = game.board(size, discs)	
 		has_discs = 1
-	except:
+	except ValueError:
 		print "Please enter a number?!"
+	except Exception as e:
+		print e
 
 player_str = "Alright "
 for i in range(0, len(players)):
@@ -103,7 +105,7 @@ while(1):
 
 	resp = raw_input("Are you brave enough? yes/no ")
 	if (resp.lower() == "yes"):
-		startgame()
+		startgame(gameboard)
 	elif (resp.lower() == "no"):
 		sys.exit()
 	else:
