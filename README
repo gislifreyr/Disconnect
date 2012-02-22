@@ -1,0 +1,6 @@
+Til að hægt sé að keyra forritið þurfa game.py, prompt.py og test.py að vera í sömu möppu.
+Að því gefnu þá skal keyra forritið með því að gefa eftirfarandi skeljarskipun í viðeigandi möppu:
+	python prompt.py
+
+test.py sýnir einingaprófunina sem gerð var. Hún útskýrir sig sjálf. Til að keyra prófunina þá er gefin skipunin:
+	python test.py
