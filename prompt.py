@@ -81,7 +81,7 @@ while (not has_discs):
 		if discs == '':
 			discs = '4' # default !
 		discs = int(discs)
-		gameboard = game.board(size, discs)	
+		gameboard = game.board(size, discs) # useless, but makes "sure" that the input doesn't generate some exception..
 		has_discs = 1
 	except ValueError:
 		print "Please enter a number?!"
@@ -102,10 +102,9 @@ Alright %s, let's get ready to rumble! The gameboard will be a %r and you'll nee
 """ % (player_str,size,discs)
 
 while(1):
-
 	resp = raw_input("Are you brave enough? yes/no ")
 	if (resp.lower() == "yes"):
-		startgame(gameboard)
+		startgame(game.board(size,discs))
 	elif (resp.lower() == "no"):
 		sys.exit()
 	else:
