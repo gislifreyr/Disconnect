@@ -45,7 +45,7 @@ class board:
 	def play(self, symbol, col):
 		if (self.fourinarow):
 			return False # game is over, we won't allow more moves
-		if (len(self.board[0]) <= col):
+		if (len(self.board[0]) <= col or col < 0):
 			raise Exception("Column out of bounds");
 		# Let's start at the "bottom" and work our way up
 		for n in range(self.height-1, -1, -1):
