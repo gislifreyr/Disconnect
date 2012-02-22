@@ -64,7 +64,7 @@ for i in range(1, n_players+1):
 print "Now what size would you like the gameboard to be (default: 6x6)?"
 has_size = 0
 while (not has_size):
-	size = raw_input("> (e.g 6x6 or 6x3) ")
+	size = raw_input(prompt)
 	try:
 		if size == '':
 			size = '6x6' # default !
@@ -74,15 +74,17 @@ while (not has_size):
 	except:
 		print "Invalid size!"
 
-print "And how many discs in a row does it take to win? It's your decision..."
+print "And how many discs in a row does it take to win? It's your decision... (default: 4)"
 has_discs = 0
 while (not has_discs):
-	discs = raw_input("> (e.g. 3 or 4) ")
+	discs = raw_input(prompt)
 	try:
+		if discs == '':
+			discs = '4' # default !
 		discs = int(discs)
 		has_discs = 1
 	except:
-		print "Please enter a number?! WTF"
+		print "Please enter a number?!"
 
 player_str = "Alright "
 for i in range(0, len(players)):

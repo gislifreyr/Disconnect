@@ -8,6 +8,7 @@ class board:
 		self.NTOWIN = discs
 		self.init()
 		self.fourinarow = None
+
 	def init(self):
 		(h,w) = self.size.split('x')
 		self.height = int(h)
