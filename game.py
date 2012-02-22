@@ -6,13 +6,15 @@ class board:
 		self.board = []
 		self.UNUSED = '_'
 		self.NTOWIN = discs
-		self.init()
 		self.fourinarow = None
-
+		return self.init()
 	def init(self):
 		(h,w) = self.size.split('x')
 		self.height = int(h)
 		self.width = int(w)
+		if (self.height < self.NTOWIN and self.width < self.NTOWIN):
+			raise Exception("The number of discs-in-a-row to win, may not be greater than both board dimensions!")
+
 		for n in range(0,self.height):
 			row = []
 			for j in range(0,self.width):
@@ -41,6 +43,8 @@ class board:
 			return True # out-of-bounds cells are considered "in use", so we avoid handling these exceptions
 
 	def play(self, symbol, col):
+		if (self.fourinarow):
+			return False # game is over, we won't allow more moves
 		if (len(self.board[0]) <= col):
 			raise Exception("Column out of bounds");
 		# Let's start at the "bottom" and work our way up
