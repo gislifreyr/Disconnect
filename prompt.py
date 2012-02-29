@@ -77,7 +77,7 @@ if (computer and not begins):
 
 
 for i in range(0, n_players):
-	print "Please enter name for player " + str(i) + "."
+	print "Please enter name for player " + str(i+1) + "."
 	name_ok = 0
 	while (not name_ok):
 		p = raw_input(prompt)
