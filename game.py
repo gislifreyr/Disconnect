@@ -197,7 +197,8 @@ class board:
 
 
 class computer:
-	def __init__(self, board):
+	def __init__(self, board, difficulty = 3):
+		self.difficulty = difficulty
 		self.board = board
 
 	def legal_moves(self):
@@ -226,7 +227,7 @@ class computer:
 				symbol = 'O'
 			else:
 				symbol = 'X'
-			v.append(self.minimax_value(player_symbol, symbol, 4))
+			v.append(self.minimax_value(player_symbol, symbol, self.difficulty))
 			self.board[L[0]][L[1]] = self.board.UNUSED
 		if player_symbol == 'X':
 			L = M[v.index(max(v))]
