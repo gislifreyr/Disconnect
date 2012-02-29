@@ -2,17 +2,19 @@
 import math
 
 class board:
-	def __init__(self, size='4x4', discs=4):
+	def __init__(self, size='3x6', discs=4):
 		self.size = size
 		self.board = []
 		self.UNUSED = '_'
 		self.NTOWIN = discs
 		self.fourinarow = None
+		self.freespaces = -1 # ... something impossible
 		return self.init()
 	def init(self):
 		(h,w) = self.size.split('x')
 		self.height = int(h)
 		self.width = int(w)
+		self.freespaces = self.height * self.width
 		if (self.height < self.NTOWIN and self.width < self.NTOWIN):
 			raise Exception("The number of discs-in-a-row to win, may not be greater than both board dimensions!")
 
@@ -47,6 +49,9 @@ class board:
 			return True # out-of-bounds cells are considered "in use", so we avoid handling these exceptions
 
 	def play(self, symbol, col):
+		if (self.freespaces == 0):
+			print "BOARD IS FULL!"
+			return False
 		if (self.fourinarow):
                         print self.fourinarow
 			return False # game is over, we won't allow more moves
@@ -59,6 +64,7 @@ class board:
 				self.board[n][col] = symbol
 				# we have successfully placed the symbol, let's check for 4-in-a-row!
 				self.checkinarow()
+				self.freespaces -= 1 # let's keep track of free spaces
 				return True
 		return False
 
@@ -207,7 +213,10 @@ class computer:
 					break
 		return M
  
-	def play(self, symbol):
+	def play(self, symbol): #XXX: smá hax að þetta noti ekki board.play
+		if (self.board.freespaces == 0): # ^ ^ ^
+			print "BOARD IS FULL!"
+			return False
 		player_symbol = symbol
 		v = []
 		M = self.legal_moves()
@@ -225,6 +234,8 @@ class computer:
 		else:
 			L = M[v.index(min(v))]
 			self.board[L[0]][L[1]] = player_symbol
+		self.board.checkinarow()
+		self.board.freespaces -= 1 # ... sjá comment efst
 	    
 	def minimax_value(self, player_symbol, symbol, iterations):
 		if iterations == 0:
