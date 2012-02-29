@@ -45,7 +45,7 @@ prompt = '>> '
 print "Welcome to Disconnect!"
 print "The game that will blow your mind!"
 n_players = 0
-print "Enter the number of players (2-4)"
+print "Enter the number of human players (1-4)"
 computer = 0 # default we do not expect a computer player
 while (not n_players):
 	n = raw_input(prompt)
