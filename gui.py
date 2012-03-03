@@ -27,9 +27,47 @@ class HelloWorld(gtk.Window):
 	def __init__(self):
 		super(HelloWorld, self).__init__()
 		# create a new window
+
+		self.set_title("Disconnect")
+		self.set_size_request(1300, 850)
+		self.set_position(gtk.WIN_POS_CENTER)
+
+		#menubar
+		menubar = gtk.MenuBar()
+		#menubar items
+		filem = gtk.MenuItem("File")
+		helpm = gtk.MenuItem("Help")
+		#submenus
+		filemenu = gtk.Menu()
+		filem.set_submenu(filemenu)
+		helpmenu = gtk.Menu()
+		helpm.set_submenu(helpmenu)
+		#add items in submenu
+		quit = gtk.MenuItem("Quit")
+		quit.connect("activate", gtk.main_quit)
+		filemenu.append(quit)
+		sos = gtk.MenuItem("View help")
+		helpmenu.append(sos)
+		about = gtk.MenuItem("About")
+		helpmenu.append(about)
+
+		menubar.append(filem)
+		menubar.append(helpm)
+
+		menubox = gtk.VBox(False, 2)
+		menubox.pack_start(menubar, False, False, 0)
+
+		self.add(menubox)
+
+		afbrigdi = gtk.ComboBox()
+		afbrigdi.append_text("Venjulegur")
+		afbrigdi.appenx_text("Ofugt")
+		valbox = gtk.HBox(False, 2)
+		valbox.pack_start(afbrigdi, False, False, 0)
+		self.add(valbox)
+
+
 		self.connect("destroy", gtk.main_quit)
-		# Sets the border width of the window.
-		self.set_border_width(10)
 		# Creates a new button with the label "Hello World".
 		self.button = gtk.Button("Hello World")
 		self.button.connect("clicked", self.hello, None)
