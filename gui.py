@@ -5,27 +5,8 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
+import game
 
-# XXX: Modify GraphicalBoard object to draw a gameboard as we see fit!
-class GraphicalBoard(gtk.DrawingArea):
-    # Draw in response to an expose-event
-    __gsignals__ = { "expose-event": "override" }
-    # Handle the expose-event by drawing
-    def do_expose_event(self, event):
-        # Create the cairo context
-        cr = self.window.cairo_create()
-        # Restrict Cairo to the exposed area; avoid extra work
-        cr.rectangle(event.area.x, event.area.y,
-                event.area.width, event.area.height)
-        cr.clip()
-        self.draw(cr, *self.window.get_size())
-
-    def draw(self, cr, width, height):
-	print "Drawing on a window of width=" + str(width) + " and height=" + str(height)
-        # Fill the background with gray
-        cr.set_source_rgb(0.5, 0.5, 0.5)
-        cr.rectangle(0, 0, width, height)
-        cr.fill()
 
 class GUIDisconnect(gtk.Window):
 	# This is a callback function. The data arguments are ignored
@@ -98,8 +79,9 @@ class GUIDisconnect(gtk.Window):
 
 		inner_container.pack_start(buttonbox, False, False, 0);
 		# Create and add the gameboard
-		self.board = GraphicalBoard()
-		inner_container.pack_start(self.board);
+		self.board = game.board()
+		self.gboard = game.GraphicalBoard(self.board)
+		inner_container.pack_start(self.gboard);
 
 		outer_container.pack_start(inner_container, True, True, 0)
 
