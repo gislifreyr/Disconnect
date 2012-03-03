@@ -38,6 +38,10 @@ class board:
 				rstr += "[" + cell + "] "
 			print rstr
 
+	def draw_gui(self,something):
+		# XXX: TBD!
+		return False
+
 	def inuse(self,row,col):
 		try:
 			if (self.board[row][col] != self.UNUSED):
