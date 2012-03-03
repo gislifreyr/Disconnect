@@ -210,9 +210,7 @@ class computer:
 		for i in range(self.board.width):
 			for j in range(self.board.height-1,-1,-1):
 				if not self.board.inuse(j,i):
-					L = []
-					L.append(j)
-					L.append(i)
+					L = [j, i]
 					M.append(L)
 					#print str(L[0])+','+str(L[1])
 					break
@@ -233,14 +231,17 @@ class computer:
 				symbol = 'X'
 			v.append(self.minimax_value(player_symbol, symbol, self.difficulty))
 			self.board[L[0]][L[1]] = self.board.UNUSED
+		best_move = 0
 		if player_symbol == 'X':
-			L = M[v.index(max(v))]
-			self.board[L[0]][L[1]] = player_symbol
+			best_move = max(v)
 		else:
-			L = M[v.index(min(v))]
-			self.board[L[0]][L[1]] = player_symbol
-		self.board.checkinarow()
-		self.board.freespaces -= 1 # ... sjá comment efst
+			best_move = min(v)
+		
+		for move in v:
+			print "move=" + str(M[v.index(move)]) + " : " + str(v.index(move)) + " einkunn: " + str(move)
+		L = M[v.index(best_move)]
+		print "Computer (" + player_symbol + ") choosing move: " + str(L) + " (" + str(best_move) + ")"
+		self.board.play(player_symbol, L[1])
 	    
 	def minimax_value(self, player_symbol, symbol, iterations):
 		if iterations == 0:

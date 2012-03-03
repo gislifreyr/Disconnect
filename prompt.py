@@ -1,4 +1,5 @@
-import sys,game,traceback
+#!/usr/bin/python -u
+import sys,game
 
 def parse_input(inp):
 	return
