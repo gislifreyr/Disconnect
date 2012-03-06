@@ -272,29 +272,29 @@ class computer:
 		if (self.board.freespaces == 0): # ^ ^ ^
 			print "BOARD IS FULL!"
 			return False
-		player_symbol = symbol
+		my_symbol = symbol
 		v = []
 		M = self.legal_moves()
 		for L in (M):
-			self.board[L[0]][L[1]] = player_symbol
-			if symbol == 'X':
-				symbol = 'O'
+			self.board[L[0]][L[1]] = my_symbol
+			if my_symbol == 'X':
+				player_symbol = 'O'
 			else:
-				symbol = 'X'
-			v.append(self.minimax_value(player_symbol, symbol, self.difficulty))
+				player_symbol = 'X'
+			v.append(self.minimax_value(player_symbol, my_symbol, self.difficulty))
 			self.board[L[0]][L[1]] = self.board.UNUSED
 		best_move = 0
-		if player_symbol == 'X':
+		if my_symbol == 'X':
 			best_move = max(v)
 		else:
 			best_move = min(v)
 		
-		for i in range(len(v)):
-			move = v[i]
-			print "move=" + str(M[i]) + " : " + str(i) + " einkunn: " + str(move)
+		#for i in range(len(v)):
+		#	move = v[i]
+		#	print "move=" + str(M[i]) + " : " + str(i) + " einkunn: " + str(move)
 		L = M[v.index(best_move)]
 		#print "Computer (" + player_symbol + ") choosing move: " + str(L) + " (" + str(best_move) + ")"
-		self.board.play(player_symbol, L[1])
+		self.board.play(my_symbol, L[1])
 	    
 	def minimax_value(self, player_symbol, symbol, iterations):
 		if iterations == 0:
@@ -305,15 +305,12 @@ class computer:
 		if len(M) == 0:
 			return self.board.evaluate()
 		for L in (M):
-			self.board[L[0]][L[1]] = symbol
+			self.board[L[0]][L[1]] = symbol # 
 			multiplier = self.board.board_heatmap[L[0]][L[1]]
-			print "column: " + str(L[1]) + " multiplier: " + str(multiplier)
-			if symbol == 'X':
-				symbol = 'O'
-			else:
-				symbol = 'X'
-			mv = self.minimax_value(player_symbol, symbol, iterations)
-			print "minimax value=" + str(mv) + " after multiplier=" + str(multiplier*mv)
+			#print "column: " + str(L[1]) + " multiplier: " + str(multiplier)
+			# Switch player symbols for the next move
+			mv = self.minimax_value(symbol, player_symbol, iterations)
+			#print "minimax value=" + str(mv) + " after multiplier=" + str(multiplier*mv)
 			v.append(multiplier * mv)
 			self.board[L[0]][L[1]] = self.board.UNUSED
 		if player_symbol == 'X':

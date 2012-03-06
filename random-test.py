@@ -43,8 +43,8 @@ for r in range(0,rounds):
 		print "Round %d/%d"%(r+1,rounds)
 	computer_player = random.randrange(2) # which player is the computer?
 	while (not game_over):
-		board.draw()
-		print "Computer should play: " + str(symbols[computer_player])
+		#board.draw()
+		#print "Computer should play: " + str(symbols[computer_player])
 		# we are the random dude?
 		for player in [0, 1]:
 			if (board.fourinarow is not None or board.freespaces == 0):
@@ -68,6 +68,6 @@ for r in range(0,rounds):
 			#print "WHAAA? IT'S A TIE!"
 			ties += 1
 			game_over = 1
-	board.draw()
+	#board.draw()
 
 print "Ran %d rounds, computer wins: %d, random wins: %d, ties: %d"%(rounds, comp_won, rand_won, ties)
