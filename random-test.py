@@ -41,9 +41,10 @@ for r in range(0,rounds):
 	computer = game.computer(board,difficulty)
 	if (r % 10 == 0):
 		print "Round %d/%d"%(r+1,rounds)
+	computer_player = random.randrange(2) # which player is the computer?
 	while (not game_over):
 		board.draw()
-		computer_player = random.randrange(2) # which player is the computer?
+		print "Computer should play: " + str(symbols[computer_player])
 		# we are the random dude?
 		for player in [0, 1]:
 			if (board.fourinarow is not None or board.freespaces == 0):

@@ -46,6 +46,7 @@ class board:
 	def __init__(self, size='3x6', discs=4):
 		self.size = size
 		self.board = []
+		self.board_heatmap = []
 		self.UNUSED = '_'
 		self.NTOWIN = discs
 		self.fourinarow = None
@@ -59,11 +60,21 @@ class board:
 		if (self.height < self.NTOWIN and self.width < self.NTOWIN):
 			raise Exception("The number of discs-in-a-row to win, may not be greater than both board dimensions!")
 
-		for n in range(0,self.height):
+		for n in range(self.height):
 			row = []
-			for j in range(0,self.width):
+			for j in range(self.width):
 				row.append(self.UNUSED) # default unused cell
 			self.board.append(row)
+
+		# initialize heatmap
+		for n in range(self.height):
+			row = []
+			for col in range(self.width):
+				row.append(self.heat_value(col-(self.width/2)))
+			self.board_heatmap.append(row)
+
+	def heat_value(self, n):
+		return 1-(n*n)/50.0 # 1 - (x^2 / 50.0)
 
 	def __getitem__(self,pos):
 		return self.board[pos]
@@ -237,7 +248,7 @@ class board:
 			else:
 			   return max1
 		except Exception as e:
-			print'get_maxvalue'
+			print 'get_maxvalue'
 			print e
 
 
@@ -278,10 +289,11 @@ class computer:
 		else:
 			best_move = min(v)
 		
-		for move in v:
-			print "move=" + str(M[v.index(move)]) + " : " + str(v.index(move)) + " einkunn: " + str(move)
+		for i in range(len(v)):
+			move = v[i]
+			print "move=" + str(M[i]) + " : " + str(i) + " einkunn: " + str(move)
 		L = M[v.index(best_move)]
-		print "Computer (" + player_symbol + ") choosing move: " + str(L) + " (" + str(best_move) + ")"
+		#print "Computer (" + player_symbol + ") choosing move: " + str(L) + " (" + str(best_move) + ")"
 		self.board.play(player_symbol, L[1])
 	    
 	def minimax_value(self, player_symbol, symbol, iterations):
@@ -294,11 +306,15 @@ class computer:
 			return self.board.evaluate()
 		for L in (M):
 			self.board[L[0]][L[1]] = symbol
+			multiplier = self.board.board_heatmap[L[0]][L[1]]
+			print "column: " + str(L[1]) + " multiplier: " + str(multiplier)
 			if symbol == 'X':
 				symbol = 'O'
 			else:
 				symbol = 'X'
-			v.append(self.minimax_value(player_symbol, symbol, iterations))
+			mv = self.minimax_value(player_symbol, symbol, iterations)
+			print "minimax value=" + str(mv) + " after multiplier=" + str(multiplier*mv)
+			v.append(multiplier * mv)
 			self.board[L[0]][L[1]] = self.board.UNUSED
 		if player_symbol == 'X':
 			return max(v)
