@@ -27,20 +27,23 @@ class GraphicalBoard(gtk.DrawingArea):
 	def drawboard(self, cr, width, height):
 		bwidth = self.board.width;
 		bheight = self.board.height;
+		margin_px = 10
+		width -= margin_px
+		height -= margin_px
 		# let's calculate the dimensions of each of our disc-slots, based on this information
 		# we'll have a 10px margin between slots
-		slotw = (width - (10 * bwidth)) / bwidth;
-		sloth = (height - (10 * bheight)) / bheight;
+		slotw = (width - (margin_px * bwidth)) / bwidth;
+		sloth = (height - (margin_px * bheight)) / bheight;
 		print "Slot width=" + str(slotw) + " height=" + str(sloth)
-		(startx,starty) = (10,10)
+		(startx,starty) = (margin_px,margin_px)
 		for row in range(bwidth):
-			starty = 0
 			for col in range(bheight):
 				cr.set_source_rgb(random.random(), random.random(), random.random())
 				cr.rectangle(startx, starty, slotw, sloth)
 				cr.fill()
-				starty += sloth+10
-			startx += slotw+10
+				starty += sloth+margin_px
+			starty = margin_px
+			startx += slotw+margin_px
 
 class board:
 	def __init__(self, size='3x6', discs=4):
