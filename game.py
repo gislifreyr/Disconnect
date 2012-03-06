@@ -31,7 +31,7 @@ class GraphicalBoard(gtk.DrawingArea):
 		# we'll have a 10px margin between slots
 		slotw = (width - (10 * bwidth)) / bwidth;
 		sloth = (height - (10 * bheight)) / bheight;
-		print "Slow width=" + str(slotw) + " height=" + str(sloth)
+		print "Slot width=" + str(slotw) + " height=" + str(sloth)
 		(startx,starty) = (10,10)
 		for row in range(bwidth):
 			starty = 0
