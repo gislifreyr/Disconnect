@@ -32,22 +32,29 @@ class GUIDisconnect(wx.Frame):
 
 		# Create and position the main panel
 		self.Center()
-
-                APP_EXIT=1
+		
+                # ---MENUBAR---
+                START = 1
+                APP_EXIT = 2
 		menubar = wx.MenuBar()
-		fileMenu = wx.Menu()
-		qmi = wx.MenuItem(fileMenu, APP_EXIT, '&Quit\tCtrl+Q')
-		fileMenu.AppendItem(qmi)
+		GameMenu = wx.Menu()
+		
+		NewGame_mi = wx.MenuItem(GameMenu, START, '&Nyr leikur\tCtrl+n') 
+		quit_mi = wx.MenuItem(GameMenu, APP_EXIT, '&Hætta\tCtrl+Q')
+		
+		GameMenu.AppendItem(NewGame_mi)
+		GameMenu.AppendItem(quit_mi)
 
+                self.Bind(wx.EVT_MENU, self.new_game, id=START)
 		self.Bind(wx.EVT_MENU, self.OnQuit, id=APP_EXIT)
 
-		menubar.Append(fileMenu, '&Game')
+		menubar.Append(GameMenu, '&Game')
 		self.SetMenuBar(menubar)
 		
 	def OnQuit(self, e):
                 self.Close()	
                 
-	def new_game(self, event):
+	def new_game(self, event):      # --- teiknar mynd af nyju bordi yfir gamla, gamla sést ef stærd á glugga breytist.
 		print "Stofna nýjan leik!"
 		afbrigdi = self.afbrigdi.GetValue()
 		print "afbrigdi=" + afbrigdi
