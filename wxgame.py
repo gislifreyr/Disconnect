@@ -111,8 +111,13 @@ class GraphicalBoard(wx.Panel):
 				if (withinbounds(slot, pt)):
 					print "Adding game symbol to: row:" + str(r) + " / col:" + str(c)
 					self.board.play(self.player_symbols[self.curplayer], c)
-					# XXX: check if self.board.fourinarow == self.player_symbols[self.curplayer]
-					#      then the current player has won! set self.parent.IN_GAME = 0 ...
+					self.board.checkinarow()
+                                        if self.board.fourinarow == self.player_symbols[self.curplayer]:
+                                                print 'four in a row'
+                                                self.parent.IN_GAME = 0
+                                                wx.MessageBox('Til hamingju tu vannst') #prentar ádur en hún teiknar disk.
+                                                
+					# --- eftir ad koma ntowin in í evaluate fallid (athugar bara 4 í röd) 
 					# XXX: if player has won, use wx.MessageBox to congratulate player (how many moves?)
 					self.curplayer += 1
 					if (self.curplayer >= self.nplayers):

@@ -53,19 +53,23 @@ class GUIDisconnect(wx.Frame):
 		
 	def OnQuit(self, e):
                 self.Close()	
+
+        def ntowin(self):
+                ntowin = int(self.skifur.GetValue())
+                return ntowin
                 
-	def new_game(self, event):      # --- teiknar mynd af nyju bordi yfir gamla, gamla sést ef stærd á glugga breytist.
+	def new_game(self, event):      # --- teiknar mynd af nyju bordi yfir gamla, gamla sést ef stærd breytist.
 		print "Stofna nýjan leik!"
 		afbrigdi = self.afbrigdi.GetValue()
 		print "afbrigdi=" + afbrigdi
 		staerd = self.size.GetValue()
  		print "staerd=" + staerd
 		try:
-			ntowin = int(self.skifur.GetValue())
+			self.ntowin()
 		except:
 			wx.MessageBox('Villa! Skífufjöldi þarf að vera heiltala!', 'Error', wx.OK | wx.ICON_INFORMATION)
 			return
-		print "ntowin=" + str(ntowin)
+		print "ntowin=" + str(self.ntowin())
 		self.board = game.board(self.size.GetValue())
 		self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
 		self.panel = self.gboard
