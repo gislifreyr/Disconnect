@@ -14,7 +14,7 @@ class GUIDisconnect(wx.Frame):
 
 		afbrigdi_label = wx.StaticText(self, -1, 'Afbrigði', pos=(10, initpos))
 		initpos += 17
-		self.afbrigdi = wx.ComboBox(self, -1, size=(125, -1), pos=(10, initpos), value='venjulegt', choices= ['venjulegt', 'öfugt'])
+		self.afbrigdi = wx.ComboBox(self, -1, size=(125, -1), pos=(10, initpos), value='venjulegt', choices= ['venjulegt', 'öfugt'], style=wx.CB_READONLY)
 		initpos += 30
 
 		size_label = wx.StaticText(self, -1, "Stærð borðs", pos=(10, initpos))
