@@ -16,7 +16,12 @@ class GraphicalBoard(wx.Panel):
 	def __init__(self, parent, board, nplayers):
 		"""Constructor"""
 		self.parent = parent
-		wx.Panel.__init__(self, parent=parent, size=(400,350), pos=(150,60))
+		(pwidth, pheight) = parent.GetSize()
+		l_offset = 150
+		t_offset = 60
+		self.width = pwidth - l_offset
+		self.height = pheight - t_offset - 50
+		wx.Panel.__init__(self, parent=parent, size=(self.width,self.height), pos=(l_offset,t_offset))
 		self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 		self.frame = parent
 		self.board = board # ATH: row / col
@@ -50,10 +55,15 @@ class GraphicalBoard(wx.Panel):
 		    dc.SetClippingRect(rect)
 		dc.Clear()
 
-		width = 400 # XXX: make dynamic: self.GetUpdateRegion.GetBox().width ????
-		height = 200 # XXX: make dynamic: self.GetUpdateRegion.GetBox().height ????
+		width = self.width
+		height = self.height
 		bwidth = self.board.width;
                 bheight = self.board.height;
+
+		slotsize = min(width/bwidth, height/bheight)
+		width = slotsize * bwidth
+		height = slotsize * bheight
+
                 margin_px = 10
                 width -= margin_px
                 height -= margin_px
@@ -69,11 +79,15 @@ class GraphicalBoard(wx.Panel):
                         for row in range(bheight):
                                 dc.SetBrush(wx.Brush((150,150,150), wx.SOLID))
                                 dc.DrawRectangle(startx, starty, slotw, sloth)
+				dc.SetBrush(wx.Brush((255, 255, 255), wx.SOLID)) #teiknum tóman hring
+				dc.DrawEllipse(startx, starty, slotw-1, sloth-1)
 				rows.append((startx, starty, startx+slotw, starty+sloth))
 				# let's draw a game symbol here
-				if (self.board.board[row][col] != self.board.UNUSED):
+				try:
 					dc.SetBrush(wx.Brush(self.symbol_colors[self.board.board[row][col]], wx.SOLID))
-					dc.DrawEllipse(startx, starty, slotw, sloth)
+					dc.DrawEllipse(startx, starty, slotw-1, sloth-1)
+				except:
+					next # unused slot
                                 starty += sloth+margin_px
 
                         starty = margin_px

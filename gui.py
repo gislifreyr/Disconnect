@@ -14,7 +14,7 @@ class GUIDisconnect(wx.Frame):
 
 		afbrigdi_label = wx.StaticText(self, -1, 'Afbrigði', pos=(10, initpos))
 		initpos += 17
-		self.afbrigdi = wx.ComboBox(self, -1, size=(125, -1), pos=(10, initpos), value='venjulegt', choices= ['venjulegt', 'öfugt'], style=wx.CB_READONLY)
+		self.afbrigdi = wx.ComboBox(self, -1, size=(125, -1), pos=(10, initpos), value='venjulegt', choices= ['venjulegt', 'öfugt'])
 		initpos += 30
 
 		size_label = wx.StaticText(self, -1, "Stærð borðs", pos=(10, initpos))
@@ -49,9 +49,16 @@ class GUIDisconnect(wx.Frame):
                 
 	def new_game(self, event):
 		print "Stofna nýjan leik!"
-		print "afbrigdi=" + self.afbrigdi.GetValue()
-		print "staerd=" + self.size.GetValue()
-		print "ntowin=" + self.skifur.GetValue()
+		afbrigdi = self.afbrigdi.GetValue()
+		print "afbrigdi=" + afbrigdi
+		staerd = self.size.GetValue()
+ 		print "staerd=" + staerd
+		try:
+			ntowin = int(self.skifur.GetValue())
+		except:
+			wx.MessageBox('Villa! Skífufjöldi þarf að vera heiltala!', 'Error', wx.OK | wx.ICON_INFORMATION)
+			return
+		print "ntowin=" + str(ntowin)
 		self.board = game.board(self.size.GetValue())
 		self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
 		self.panel = self.gboard
