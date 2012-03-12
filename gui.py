@@ -7,19 +7,28 @@ class GUIDisconnect(wx.Frame):
 	def __init__(self):
 		"""Constructor"""
 		wx.Frame.__init__(self, None, size=(600,450))
+		self.IN_GAME = 0 # THIS DEFAULTS TO 0
 
 		self.SetBackgroundColour('white') # please change asap!!!
+		initpos = 10;
 
-		afbrigdi = wx.ComboBox(self, -1, size=(125, -1), value="Afbrigdi",  pos=(10,10), choices= ['venjulegt', 'ofugt'], style=wx.CB_READONLY)
-		size = wx.ComboBox(self, -1, size=(125, -1), value="Staerd bords", pos=(10,40), choices=['6x6', '4x4', 'custom'], style=wx.CB_READONLY)
-		texti1 = wx.StaticText(self, -1, ("'rows' x 'cols'"), pos=(10, 70))
-		#c_size = wx.TextCtrl(self, -1, ("m x n"))
-		#skifur = wx.ComboBox(self, -1, size=(125, -1), value="Fjoldi skifa", pos=(10,10), choices= ['3', '4', 'custom'], style=wx.CB_READONLY)
-		#texti2 = wx.StaticText(self, -1, ("Number of discs"), (10,10))
-		#c_discs = wx.TextCtrl(self, -1, ("i"))
-		#apply = wx.Button(self, -1, 'Apply', size=(100, -1))
+		afbrigdi_label = wx.StaticText(self, -1, 'Afbrigði', pos=(10, initpos))
+		initpos += 17
+		self.afbrigdi = wx.ComboBox(self, -1, size=(125, -1), pos=(10, initpos), value='venjulegt', choices= ['venjulegt', 'öfugt'], style=wx.CB_READONLY)
+		initpos += 30
 
-		#self.Bind(wx.EVT_BUTTON, self.OnClickButtonPress, button) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA? 
+		size_label = wx.StaticText(self, -1, "Stærð borðs", pos=(10, initpos))
+		initpos += 17
+		self.size = wx.ComboBox(self, -1, size=(125, -1), value="3x6", pos=(10,initpos), choices=['3x6', '6x7', '6x6', '4x4'], style=wx.CB_READONLY)
+		initpos += 30
+
+		skifu_label = wx.StaticText(self, -1, "Fjöldi skífa", pos=(10, initpos))
+		initpos += 17
+		self.skifur = wx.ComboBox(self, -1, size=(125, -1), value="4", pos=(10,initpos), choices= ['3', '4', 'custom'], style=wx.CB_READONLY)
+		initpos += 30
+		start = wx.Button(self, -1, 'Spila', size=(100, -1), pos=(10, initpos))
+
+		self.Bind(wx.EVT_BUTTON, self.new_game, start) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA? 
 
 		self.board = game.board()
                 self.gboard = wxgame.GraphicalBoard(self,self.board)
@@ -27,8 +36,14 @@ class GUIDisconnect(wx.Frame):
 		# Create and position the main panel
 		self.Center()
 
-	def OnClickButtonPress(self, event):
-		print "Button pressed!"
+	def new_game(self, event):
+		print "Stofna nýjan leik!"
+		print "afbrigdi=" + self.afbrigdi.GetValue()
+		print "staerd=" + self.size.GetValue()
+		print "ntowin=" + self.skifur.GetValue()
+		self.board = game.board(self.size.GetValue())
+		self.gboard = wxgame.GraphicalBoard(self, self.board)
+		self.IN_GAME = 1
 
 if __name__ == "__main__":
     app = wx.App(False)
