@@ -13,7 +13,7 @@ def withinbounds(b,c): # b = boundaries, c = click
 
 class GraphicalBoard(wx.Panel):
 	""""""
-	def __init__(self, parent, board):
+	def __init__(self, parent, board, nplayers):
 		"""Constructor"""
 		self.parent = parent
 		wx.Panel.__init__(self, parent=parent, size=(400,350), pos=(150,60))
@@ -26,6 +26,9 @@ class GraphicalBoard(wx.Panel):
 			'O': (0,0,255),
 			'Y': (0,255,0)
 		}
+		self.player_symbols = ['X','O','Y']
+		self.curplayer = 0
+		self.nplayers = nplayers
 
 		# Keep track of mouse cursor
 		self.pos=(0,0)
@@ -92,7 +95,10 @@ class GraphicalBoard(wx.Panel):
 				slot = col[r]
 				if (withinbounds(slot, pt)):
 					print "Adding game symbol to: row:" + str(r) + " / col:" + str(c)
-					self.board.board[r][c] = 'X'
+					self.board.play(self.player_symbols[self.curplayer], c)
+					self.curplayer += 1
+					if (self.curplayer >= self.nplayers):
+						self.curplayer = 0
 		self.Refresh() # force a redraw of the panel
 
 

@@ -30,9 +30,9 @@ class GUIDisconnect(wx.Frame):
 
 		self.Bind(wx.EVT_BUTTON, self.new_game, start) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA? 
 
-		self.board = game.board()
-                self.gboard = wxgame.GraphicalBoard(self,self.board)
-		self.panel = self.gboard
+		#self.board = game.board()
+                #self.gboard = wxgame.GraphicalBoard(self,self.board)
+		#self.panel = self.gboard
 		# Create and position the main panel
 		self.Center()
 
@@ -42,7 +42,8 @@ class GUIDisconnect(wx.Frame):
 		print "staerd=" + self.size.GetValue()
 		print "ntowin=" + self.skifur.GetValue()
 		self.board = game.board(self.size.GetValue())
-		self.gboard = wxgame.GraphicalBoard(self, self.board)
+		self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
+		self.panel = self.gboard
 		self.IN_GAME = 1
 
 if __name__ == "__main__":
