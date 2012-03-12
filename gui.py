@@ -41,7 +41,7 @@ class GUIDisconnect(wx.Frame):
 
 		self.Bind(wx.EVT_MENU, self.OnQuit, id=APP_EXIT)
 
-		menubar.Append(fileMenu, '&File')
+		menubar.Append(fileMenu, '&Game')
 		self.SetMenuBar(menubar)
 		
 	def OnQuit(self, e):
