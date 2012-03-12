@@ -111,7 +111,6 @@ class GraphicalBoard(wx.Panel):
 				if (withinbounds(slot, pt)):
 					print "Adding game symbol to: row:" + str(r) + " / col:" + str(c)
 					self.board.play(self.player_symbols[self.curplayer], c)
-					self.board.checkinarow()
                                         if self.board.fourinarow == self.player_symbols[self.curplayer]:
                                                 print 'four in a row'
                                                 self.parent.IN_GAME = 0
