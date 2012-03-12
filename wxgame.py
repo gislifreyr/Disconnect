@@ -97,6 +97,7 @@ class GraphicalBoard(wx.Panel):
 		#print self.board_slots
 		#print self.pos # debugging
 
+	# Mouse click (left mouse)
 	def OnLeftDown(self, event):
 		if (self.parent.IN_GAME == 0):
 			return
@@ -110,10 +111,17 @@ class GraphicalBoard(wx.Panel):
 				if (withinbounds(slot, pt)):
 					print "Adding game symbol to: row:" + str(r) + " / col:" + str(c)
 					self.board.play(self.player_symbols[self.curplayer], c)
+					# XXX: check if self.board.fourinarow == self.player_symbols[self.curplayer]
+					#      then the current player has won! set self.parent.IN_GAME = 0 ...
+					# XXX: if player has won, use wx.MessageBox to congratulate player (how many moves?)
 					self.curplayer += 1
 					if (self.curplayer >= self.nplayers):
 						self.curplayer = 0
+
 		self.Refresh() # force a redraw of the panel
+		# XXX: now curplayer is the next one, are we playing against a computer?
+		#      ... where do we make the computer play?  Here? self.computer.play() ?
+		# Muna að kalla þá aftur í self.Refresh() til að endurteikna skjáinn eftir að tölvan hefur gert
 
 
 	def OnMovement(self, event):
