@@ -65,12 +65,12 @@ class GUIDisconnect(wx.Frame):
 		staerd = self.size.GetValue()
  		print "staerd=" + staerd
 		try:
-			self.ntowin()
+			ntowin = self.ntowin()
 		except:
 			wx.MessageBox('Villa! Skífufjöldi þarf að vera heiltala!', 'Error', wx.OK | wx.ICON_INFORMATION)
 			return
-		print "ntowin=" + str(self.ntowin())
-		self.board = game.board(self.size.GetValue())
+		print "ntowin=" + str(ntowin)
+		self.board = game.board(self.size.GetValue(), ntowin)
 		self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
 		self.panel = self.gboard
 		self.IN_GAME = 1
