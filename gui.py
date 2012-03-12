@@ -30,12 +30,23 @@ class GUIDisconnect(wx.Frame):
 
 		self.Bind(wx.EVT_BUTTON, self.new_game, start) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA? 
 
-		#self.board = game.board()
-                #self.gboard = wxgame.GraphicalBoard(self,self.board)
-		#self.panel = self.gboard
 		# Create and position the main panel
 		self.Center()
 
+                APP_EXIT=1
+		menubar = wx.MenuBar()
+		fileMenu = wx.Menu()
+		qmi = wx.MenuItem(fileMenu, APP_EXIT, '&Quit\tCtrl+Q')
+		fileMenu.AppendItem(qmi)
+
+		self.Bind(wx.EVT_MENU, self.OnQuit, id=APP_EXIT)
+
+		menubar.Append(fileMenu, '&File')
+		self.SetMenuBar(menubar)
+		
+	def OnQuit(self, e):
+                self.Close()	
+                
 	def new_game(self, event):
 		print "Stofna nýjan leik!"
 		print "afbrigdi=" + self.afbrigdi.GetValue()
