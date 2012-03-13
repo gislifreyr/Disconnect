@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # ~!~ encoding: utf-8 ~!~
-import game,wxgame,wx
+import wx
+import wxgame
+import game
+import wx.lib.dialogs
 
 
 class GUIDisconnect(wx.Frame):
@@ -34,8 +37,11 @@ class GUIDisconnect(wx.Frame):
 		self.Center()
 		
                 # ---MENUBAR---
-                START = 1
-                APP_EXIT = 2
+		START = 1
+		APP_EXIT = 2
+		ABOUT = 3
+		HELP = 4
+
 		menubar = wx.MenuBar()
 		GameMenu = wx.Menu()
 		
@@ -48,7 +54,18 @@ class GUIDisconnect(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.new_game, id=START)
 		self.Bind(wx.EVT_MENU, self.OnQuit, id=APP_EXIT)
 
+		HelpMenu = wx.Menu()
+
+		ViewHelp_mi = wx.MenuItem(HelpMenu, HELP, '&Sýna hjálp\tF1')
+		About_mi = wx.MenuItem(HelpMenu, ABOUT, '&Um Disconnect')
+
+		HelpMenu.AppendItem(ViewHelp_mi)
+		HelpMenu.AppendItem(About_mi)
+
+		self.Bind(wx.EVT_MENU, self.About, id=ABOUT)
+		self.Bind(wx.EVT_MENU, self.ViewHelp, id=HELP)
 		menubar.Append(GameMenu, '&Game')
+		menubar.Append(HelpMenu, '&Help')
 		self.SetMenuBar(menubar)
 		
 	def OnQuit(self, e):
@@ -74,6 +91,30 @@ class GUIDisconnect(wx.Frame):
 		self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
 		self.panel = self.gboard
 		self.IN_GAME = 1
+	
+	def ViewHelp(self, event):
+		h = open('help', 'r')
+		msg = h.read()
+		h.close()
+
+		help_dialog = wx.lib.dialogs.ScrolledMessageDialog(self, msg, 'Disconnect - hjálp')
+		help_dialog.ShowModal()
+		help_dialog.Destroy()
+
+	def About(self, e):
+		description = """Disconnect er skemmtilegur leikur fyrir fólk á öllum aldri. En varaðu þig, þetta er algjör tímaþjófur."""
+
+		info = wx.AboutDialogInfo()
+
+		info.SetName('Disconnect')
+		info.SetDescription(description)
+		info.SetCopyright(' (C) 2012 The Gits')
+		info.SetWebSite('github.com/gislifreyr/Disconnect')
+		info.AddDeveloper('Björgvin Vilbergsson - bjv12@hi.is')
+		info.AddDeveloper('Gísli Freyr Brynjarsson - gfb3@hi.is')
+		info.AddDeveloper('Steinn E. Sigurðarson - ses@hi.is')
+
+		wx.AboutBox(info)
 
 def main():
 	app = wx.App(False)
