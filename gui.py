@@ -29,9 +29,16 @@ class GUIDisconnect(wx.Frame):
 		initpos += 17
 		self.skifur = wx.ComboBox(self, -1, size=(125, -1), value="4", pos=(10,initpos), choices= ['3', '4', 'custom'], style=wx.CB_READONLY)
 		initpos += 30
+
+		opponent_lable = wx.StaticText(self, -1, 'Andstæðingur', pos=(10, initpos))
+		initpos += 17
+		self.opponent = wx.ComboBox(self, -1, size=(125, -1), value='Mennskur', pos=(10,initpos), choices=['Mennskur', 'Tölva'], style=wx.CB_READONLY)
+		initpos += 30
 		start = wx.Button(self, -1, 'Spila', size=(100, -1), pos=(10, initpos))
 
-		self.Bind(wx.EVT_BUTTON, self.new_game, start) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA? 
+		self.Bind(wx.EVT_BUTTON, self.new_game, start) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA?
+
+		
 
 		# Create and position the main panel
 		self.Center()
@@ -74,6 +81,10 @@ class GUIDisconnect(wx.Frame):
 	def ntowin(self):
 		ntowin = int(self.skifur.GetValue())
 		return ntowin
+
+	def Against(self):
+                Against = self.opponent.GetValue()
+                return Against
                 
 	def new_game(self, event):      # --- teiknar mynd af nyju bordi yfir gamla, gamla sést ef stærd breytist.
 		print "Stofna nýjan leik!"
@@ -81,17 +92,21 @@ class GUIDisconnect(wx.Frame):
 		print "afbrigdi=" + afbrigdi
 		staerd = self.size.GetValue()
  		print "staerd=" + staerd
+ 		print self.Against()
 		try:
 			ntowin = self.ntowin()
 		except:
 			wx.MessageBox('Villa! Skífufjöldi þarf að vera heiltala!', 'Error', wx.OK | wx.ICON_INFORMATION)
 			return
 		print "ntowin=" + str(ntowin)
-		self.board = game.board(self.size.GetValue(), ntowin)
-		self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
-		self.panel = self.gboard
-		self.IN_GAME = 1
-	
+		if self.Against() == 'Mennskur':        # --- ekki alveg klár á hvort þetta sé besta leiðin
+                        self.board = game.board(self.size.GetValue(), ntowin)
+                        self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
+                        self.panel = self.gboard
+                        self.IN_GAME = 1
+                #if self.Against() == 'Tölva': TBD
+                        # ---TBD---
+                        
 	def ViewHelp(self, event):
 		h = open('help', 'r')
 		msg = h.read()
