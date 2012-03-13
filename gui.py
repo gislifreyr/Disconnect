@@ -4,12 +4,12 @@ import game,wxgame,wx
 
 
 class GUIDisconnect(wx.Frame):
-	def __init__(self):
+	def __init__(self, parent, id, title):
 		"""Constructor"""
-		wx.Frame.__init__(self, None, size=(600,450))
+		wx.Frame.__init__(self, parent, id, title, size=(600,450),)
 		self.IN_GAME = 0 # THIS DEFAULTS TO 0
 
-		self.SetBackgroundColour('white') # please change asap!!!
+		self.SetBackgroundColour('#A32076') # please change asap!!!
 		initpos = 10;
 
 		afbrigdi_label = wx.StaticText(self, -1, 'Afbrigði', pos=(10, initpos))
@@ -39,24 +39,24 @@ class GUIDisconnect(wx.Frame):
 		menubar = wx.MenuBar()
 		GameMenu = wx.Menu()
 		
-		NewGame_mi = wx.MenuItem(GameMenu, START, '&Nyr leikur\tCtrl+n') 
+		NewGame_mi = wx.MenuItem(GameMenu, START, '&Nýr leikur\tCtrl+n') 
 		quit_mi = wx.MenuItem(GameMenu, APP_EXIT, '&Hætta\tCtrl+Q')
 		
 		GameMenu.AppendItem(NewGame_mi)
 		GameMenu.AppendItem(quit_mi)
 
-                self.Bind(wx.EVT_MENU, self.new_game, id=START)
+		self.Bind(wx.EVT_MENU, self.new_game, id=START)
 		self.Bind(wx.EVT_MENU, self.OnQuit, id=APP_EXIT)
 
 		menubar.Append(GameMenu, '&Game')
 		self.SetMenuBar(menubar)
 		
 	def OnQuit(self, e):
-                self.Close()	
+		self.Close()	
 
-        def ntowin(self):
-                ntowin = int(self.skifur.GetValue())
-                return ntowin
+	def ntowin(self):
+		ntowin = int(self.skifur.GetValue())
+		return ntowin
                 
 	def new_game(self, event):      # --- teiknar mynd af nyju bordi yfir gamla, gamla sést ef stærd breytist.
 		print "Stofna nýjan leik!"
@@ -75,8 +75,11 @@ class GUIDisconnect(wx.Frame):
 		self.panel = self.gboard
 		self.IN_GAME = 1
 
-if __name__ == "__main__":
-    app = wx.App(False)
-    frame = GUIDisconnect()
-    frame.Show()
-    app.MainLoop()
+def main():
+	app = wx.App(False)
+	frame = GUIDisconnect(None, -1, 'Disconnect')
+	frame.Show()
+	app.MainLoop()
+
+if __name__ == '__main__':
+	main()
