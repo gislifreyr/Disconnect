@@ -18,6 +18,8 @@ class GraphicalBoard(wx.Panel):
 		"""Constructor"""
 		self.computer = False
 		self.parent = parent
+		self.game_modes = ['normal', 'reversed']
+		self.game_mode = 'normal'
 		(pwidth, pheight) = parent.GetSize()
 		l_offset = 150
 		t_offset = 60
@@ -115,11 +117,13 @@ class GraphicalBoard(wx.Panel):
 					self.board.play(self.player_symbols[self.curplayer], c)
 					self.Refresh() # force a redraw of the panel
                                         if self.board.fourinarow == self.player_symbols[self.curplayer]:
-                                                print 'four in a row'
                                                 self.parent.IN_GAME = False
-                                                wx.MessageBox('Til hamingju tu vannst')
-					# --- eftir ad koma ntowin in í evaluate fallid (athugar bara 4 í röd) 
-					# XXX: if player has won, use wx.MessageBox to congratulate player (how many moves?)
+						assert(self.game_mode in self.game_modes) # tryggjum að afbrigði leiks sé stutt
+						if (self.game_mode == 'normal'):
+							wx.MessageBox('Spilari ' + str(self.curplayer+1) + ' Vinnur!')
+						elif (self.game_mode == 'reversed'):
+							wx.MessageBox('Spilari ' + str(self.curplayer+1) + ' Tapar!')
+							#XXX: fyrir nplayers > 2, þá ætti að halda utanum hverjir hafa "tapað" og skippa þeirra umferðum
 					self.curplayer += 1
 		if (self.curplayer >= self.nplayers):
 			self.curplayer = 0

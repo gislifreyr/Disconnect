@@ -93,6 +93,14 @@ class GUIDisconnect(wx.Frame):
 	def Against(self):
                 Against = self.opponent.GetValue()
                 return Against
+
+	def afbrigdi_to_gm(self, afbrigdi):
+		a2gm = {u'venjulegt': 'normal', u'öfugt': 'reversed'} # unicode support í python er ljótt hax
+		try:
+			return a2gm[afbrigdi.lower()]
+		except:
+			wx.MessageBox("Exception! Gallað afbrigði valið?");
+		return "error"
                 
 	def new_game(self, event):      # --- teiknar mynd af nyju bordi yfir gamla, gamla sést ef stærd breytist.
 		print "Stofna nýjan leik!"
@@ -120,6 +128,7 @@ class GUIDisconnect(wx.Frame):
 			self.gboard.computer_cb = self.Computer
 			self.computer = game.computer(self.board, 3) # XXX: hardcoded difficulty = 3 (same as in constructor of game.computer)
                         self.IN_GAME = True
+		self.gboard.game_mode = self.afbrigdi_to_gm(afbrigdi)
                         
 	def ViewHelp(self, event):
 		h = open('help', 'r')
