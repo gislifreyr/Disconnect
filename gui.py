@@ -40,7 +40,11 @@ class GUIDisconnect(wx.Frame):
 
 		self.Bind(wx.EVT_BUTTON, self.new_game, start) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA?
 
-		
+		initpos += 40
+		hveraleik_label = wx.StaticText(self, -1, "Hver á leik?", pos=(10, initpos))
+		initpos +=  17
+		self.nextplayer_label = wx.StaticText(self, -1, "enginn!?", pos=(10, initpos))
+		self.nextplayer_label.Hide()
 
 		# Create and position the main panel
 		self.Center()
@@ -82,7 +86,14 @@ class GUIDisconnect(wx.Frame):
 		assert(self.computer is not None)
 		wx.MessageBox("Computer's turn now!");
 		self.computer.play(symbol)
-		
+
+	def update_nextplayer(self, nplayer):
+		if (self.IN_GAME):
+			self.nextplayer_label.SetLabel('Spilari ' + str(nplayer))
+			self.nextplayer_label.Show()
+		else:
+			self.nextplayer_label.Hide()
+
 	def OnQuit(self, e):
 		self.Close()	
 
@@ -128,6 +139,8 @@ class GUIDisconnect(wx.Frame):
 			self.gboard.computer_cb = self.Computer
 			self.computer = game.computer(self.board, 3) # XXX: hardcoded difficulty = 3 (same as in constructor of game.computer)
                         self.IN_GAME = True
+
+		self.update_nextplayer(1) # spilari 1 á að gera í upphafi !
 		self.gboard.game_mode = self.afbrigdi_to_gm(afbrigdi)
                         
 	def ViewHelp(self, event):

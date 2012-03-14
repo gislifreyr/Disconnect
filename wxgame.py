@@ -104,6 +104,7 @@ class GraphicalBoard(wx.Panel):
 	# Mouse click (left mouse)
 	def OnLeftDown(self, event):
 		if (self.parent.IN_GAME == 0):
+			wx.MessageBox("Leik er lokið! Ýttu á spila til að hefja nýjan!")
 			return
 		pt = event.GetPosition() # position tuple
 		self.pos = pt
@@ -124,9 +125,13 @@ class GraphicalBoard(wx.Panel):
 						elif (self.game_mode == 'reversed'):
 							wx.MessageBox('Spilari ' + str(self.curplayer+1) + ' Tapar!')
 							#XXX: fyrir nplayers > 2, þá ætti að halda utanum hverjir hafa "tapað" og skippa þeirra umferðum
+						# XXX: hardcoded bara fyrir 2 spilara..
+						self.parent.IN_GAME = False
 					self.curplayer += 1
 		if (self.curplayer >= self.nplayers):
 			self.curplayer = 0
+
+		self.parent.update_nextplayer(self.curplayer+1)
 
 		if (self.computer and self.parent.IN_GAME): # we're playing against a computer! we should have a callback function, expecting the computer's symbol!
 			try:
