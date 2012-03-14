@@ -131,9 +131,11 @@ class GraphicalBoard(wx.Panel):
 		if (self.curplayer >= self.nplayers):
 			self.curplayer = 0
 
-		self.parent.update_nextplayer(self.curplayer+1)
+		self.Refresh() # force a redraw of the panel
+		print "Panel should have refreshed!"
 
 		if (self.computer and self.parent.IN_GAME): # we're playing against a computer! we should have a callback function, expecting the computer's symbol!
+			wx.MessageBox('Tölvan á leik!')
 			try:
 				self.computer_cb(self.player_symbols[self.curplayer])
 				self.curplayer += 1
@@ -143,6 +145,8 @@ class GraphicalBoard(wx.Panel):
 
 		if (self.curplayer >= self.nplayers):
 			self.curplayer = 0
+
+		self.parent.update_nextplayer(self.curplayer+1)
 
 	def OnMovement(self, event):
 		pt = event.GetPosition() # position tuple
