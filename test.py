@@ -2,7 +2,7 @@ import game
 
 print "Performing tests:"
 b = game.board('6x6',3)
-r = b.play('x',0)
+r = b.play('X',0)
 tests = 0
 successful = 0
 
@@ -16,7 +16,7 @@ else:
 	print "1: TEST SUCCESSFUL"
 
 tests += 1
-r = b.play('x',1)
+r = b.play('X',1)
 if (not r or b.fourinarow):
 	print "2: TEST FAILED"
 else:
@@ -24,15 +24,15 @@ else:
 	print "2: TEST SUCCESSFUL"
 
 tests += 1
-r = b.play('x',2)
-if (not r or b.fourinarow != 'x'):
+r = b.play('X',2)
+if (not r or b.fourinarow != 'X'):
 	print "3: TEST FAILED"
 else:
 	successful += 1
 	print "3: TEST SUCCESSFUL"
 
 tests += 1
-r = b.play('o',0)
+r = b.play('O',0)
 if (r):
 	print "4: TEST FAILED"
 else:

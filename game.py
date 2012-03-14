@@ -69,7 +69,7 @@ class board:
 			print "BOARD IS FULL!"
 			return False
 		if (self.fourinarow):
-                        print self.fourinarow
+                        #print self.fourinarow
 			return False # game is over, we won't allow more moves
 		if (len(self.board[0]) <= col or col < 0):
 			raise Exception("Column out of bounds");
