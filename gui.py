@@ -24,18 +24,28 @@ class GUIDisconnect(wx.Frame):
 
 		size_label = wx.StaticText(self, -1, "Stærð borðs", pos=(10, initpos))
 		initpos += 17
-		self.size = wx.ComboBox(self, -1, size=(125, -1), value="3x6", pos=(10,initpos), choices=['3x6', '6x7', '6x6', '4x4'], style=wx.CB_READONLY)
+		self.size = wx.ComboBox(self, -1, size=(125, -1), value="3x6", pos=(10,initpos), choices=['3x6', '6x7', '6x6', '4x4'])
 		initpos += 30
 
 		skifu_label = wx.StaticText(self, -1, "Fjöldi skífa", pos=(10, initpos))
 		initpos += 17
-		self.skifur = wx.ComboBox(self, -1, size=(125, -1), value="4", pos=(10,initpos), choices= ['3', '4', 'custom'], style=wx.CB_READONLY)
+		self.skifur = wx.ComboBox(self, -1, size=(125, -1), value="4", pos=(10,initpos), choices= ['3', '4'])
 		initpos += 30
 
 		opponent_label = wx.StaticText(self, -1, 'Andstæðingur', pos=(10, initpos))
 		initpos += 17
 		self.opponent = wx.ComboBox(self, -1, size=(125, -1), value='Mennskur', pos=(10,initpos), choices=['Mennskur', u'Tölva'], style=wx.CB_READONLY)
+
+		# ef tölvan er valin sem andstæðingur, geta valið styrkleika
 		initpos += 30
+		self.computer_label = wx.StaticText(self, -1, "Erfiðleikastig", pos=(10, initpos))
+		self.computer_label.Hide()
+		initpos += 17
+		self.computer_difficulty = wx.ComboBox(self, -1, size=(125, -1), value="4", pos=(10,initpos), choices= ['1', '2', '3', '4', '5'])
+		self.computer_difficulty.Hide()
+		self.Bind(wx.EVT_COMBOBOX, self.showhidecomputer, self.opponent)
+
+		initpos += 60
 		start = wx.Button(self, -1, 'Spila', size=(100, -1), pos=(10, initpos))
 
 		self.Bind(wx.EVT_BUTTON, self.new_game, start) ### SVONA BIND-AR MAÐUR EVENTA VIÐ UI-COMPONENT/TAKKA?
@@ -46,7 +56,6 @@ class GUIDisconnect(wx.Frame):
 		self.nextplayer_label = wx.StaticText(self, -1, "enginn!?", pos=(10, initpos))
 		self.nextplayer_label.Hide()
 
-		# Create and position the main panel
 		self.Center()
 		
                 # ---MENUBAR---
@@ -81,10 +90,19 @@ class GUIDisconnect(wx.Frame):
 		menubar.Append(HelpMenu, '&Help')
 		self.SetMenuBar(menubar)
 
+	def showhidecomputer(self, evt):
+		opponent = self.Against()
+		if (opponent == u'Tölva'):
+			self.computer_label.Show()
+			self.computer_difficulty.Show()
+		else:
+			self.computer_label.Hide()
+			self.computer_difficulty.Hide()
+
 	def Computer(self, symbol): # this method causes the computer to play
 		assert(self.HAS_COMPUTER is not False)
 		assert(self.computer is not None)
-		wx.MessageBox("Computer's turn now!");
+		self.update_nextplayer(str(self.gboard.curplayer+1) + " (tölvan!)") # smá hax að kalla svona inní self.gboard.curplayer....
 		self.computer.play(symbol)
 
 	def update_nextplayer(self, nplayer):
@@ -98,8 +116,33 @@ class GUIDisconnect(wx.Frame):
 		self.Close()	
 
 	def ntowin(self):
-		ntowin = int(self.skifur.GetValue())
-		return ntowin
+		ntowin = self.skifur.GetValue()
+		try:
+			ntowin = int(ntowin)
+			return ntowin
+		except:
+			wx.MessageBox('Villa! Skífufjöldi þarf að vera heiltala!', 'Error', wx.OK | wx.ICON_INFORMATION)
+		return 0
+
+	def boardSize(self):
+		s = self.size.GetValue()
+		try:
+			(h,w) = s.split('x')
+			int(h)
+			int(w)
+			return s
+		except:
+			wx.MessageBox("Úpps! Stærð þarf að vera á sniðinu AxB þar sem A og B eru heiltölur!")
+		return False
+
+	def Difficulty(self):
+		d = self.computer_difficulty.GetValue()
+		try:
+			return int(d)
+		except:
+			wx.MessageBox("Úpps! Erfiðleikastig þarf að vera heiltala!", 'Error', wx.OK | wx.ICON_INFORMATION)
+
+		return 0
 
 	def Against(self):
                 Against = self.opponent.GetValue()
@@ -116,15 +159,11 @@ class GUIDisconnect(wx.Frame):
 	def new_game(self, event):      # --- teiknar mynd af nyju bordi yfir gamla, gamla sést ef stærd breytist.
 		print "Stofna nýjan leik!"
 		afbrigdi = self.afbrigdi.GetValue()
-		print "afbrigdi=" + afbrigdi
-		staerd = self.size.GetValue()
- 		print "staerd=" + staerd
+		staerd = self.boardSize()
+		assert(staerd != False)
  		print self.Against()
-		try:
-			ntowin = self.ntowin()
-		except:
-			wx.MessageBox('Villa! Skífufjöldi þarf að vera heiltala!', 'Error', wx.OK | wx.ICON_INFORMATION)
-			return
+		ntowin = self.ntowin()
+		assert(ntowin > 0)
 		print "ntowin=" + str(ntowin)
 		if self.Against() == 'Mennskur':        # --- ekki alveg klár á hvort þetta sé besta leiðin | ses: jamm, þetta er ekki fallegt en sleppur :-)
                         self.board = game.board(self.size.GetValue(), ntowin) 
@@ -132,21 +171,21 @@ class GUIDisconnect(wx.Frame):
                         self.panel = self.gboard
                         self.IN_GAME = True
                 if self.Against() == u'Tölva': # XXX: Erfiðleikastig?
+			difficulty = self.Difficulty()
+			assert(difficulty > 0)
 			self.HAS_COMPUTER = True
                         self.board = game.board(self.size.GetValue(), ntowin) 
                         self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcoding 2 players !
 			self.gboard.computer = True
 			self.gboard.computer_cb = self.Computer
-			self.computer = game.computer(self.board, 3) # XXX: hardcoded difficulty = 3 (same as in constructor of game.computer)
+			self.computer = game.computer(self.board, difficulty) # XXX: hardcoded difficulty = 3 (same as in constructor of game.computer)
                         self.IN_GAME = True
 
 		self.update_nextplayer(1) # spilari 1 á að gera í upphafi !
 		self.gboard.game_mode = self.afbrigdi_to_gm(afbrigdi)
                         
 	def ViewHelp(self, event):
-		h = open('help', 'r')
-		msg = h.read()
-		h.close()
+		msg = file('help').read()
 
 		help_dialog = wx.lib.dialogs.ScrolledMessageDialog(self, msg, 'Disconnect - hjálp')
 		help_dialog.ShowModal()

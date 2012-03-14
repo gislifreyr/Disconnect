@@ -1,5 +1,27 @@
-Hérna kemur hjálparskjal fyrir Disconnect.
-Nenni ekki meiru í kvöld...
+Disconnect er útgáfa af hinu klassíska "Connect 4" leik, sem er líklega betur þekktur undir nafninu "Captain's Mistress", og hefur heillað hug og hjörtu leikjaunnenda um allan heim frá árinu 1974.
 
+Til að spila þarf bara að stilla upp leiknum eftir vild með valmyndinni vinstra megin á skjánum, hægt er að velja sér mismunandi:
 
-GNU ;*
+- Afbrigði
+  Venjulegt: X-skífur-í-röð vinna!
+  Öfugt: X-skífur-í-röð tapa!
+
+- Stærð leikborðs
+  3x6 - létt og laggott
+  6x7 - staðallinn!
+  6x6 - bara eitt 6 í viðbót?
+  4x4 - ekki fyrir viðkvæma
+  .. Einnig er hægt að slá inn sína eigin stærð!
+
+- Fjöldi skífa í röð
+  3 - fyrir óþolinmóða
+  4 - staðallinn klikkar ekki!
+  .. Einnig er hægt að velja sinn eigin fjölda!
+
+- Andstæðingur
+  Mennskur - þá skiptast 2 spilarar á
+  Tölva - Spilari 2 er leikinn af tölvunni
+
+- Erfiðleikastig
+  Ef tölvan er valin sem andstæðingur, má velja sér erfiðleikastig. Varúð, á stigi 5 eða hærra er tölvan mjög lengi að "hugsa" .. Hún er ekkert svakalega klár!
+
