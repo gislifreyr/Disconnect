@@ -1,6 +1,7 @@
 #!/usr/bin/python -u
 # ~!~ encoding: utf-8 ~!~
-import wx,random
+import wx
+import random
 
 def withinbounds(b,c): # b = boundaries, c = click
 	(bx1, by1, bx2, by2) = b

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import math,random
+import math
+import random
 
 class board:
 	def __init__(self, size='3x6', discs=4):

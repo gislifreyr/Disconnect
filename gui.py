@@ -32,7 +32,7 @@ class GUIDisconnect(wx.Frame):
 		self.skifur = wx.ComboBox(self, -1, size=(125, -1), value="4", pos=(10,initpos), choices= ['3', '4', 'custom'], style=wx.CB_READONLY)
 		initpos += 30
 
-		opponent_lable = wx.StaticText(self, -1, 'Andstæðingur', pos=(10, initpos))
+		opponent_label = wx.StaticText(self, -1, 'Andstæðingur', pos=(10, initpos))
 		initpos += 17
 		self.opponent = wx.ComboBox(self, -1, size=(125, -1), value='Mennskur', pos=(10,initpos), choices=['Mennskur', u'Tölva'], style=wx.CB_READONLY)
 		initpos += 30
