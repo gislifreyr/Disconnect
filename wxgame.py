@@ -15,6 +15,7 @@ class GraphicalBoard(wx.Panel):
 	""""""
 	def __init__(self, parent, board, nplayers):
 		"""Constructor"""
+		self.computer = False
 		self.parent = parent
 		(pwidth, pheight) = parent.GetSize()
 		l_offset = 150
@@ -111,22 +112,27 @@ class GraphicalBoard(wx.Panel):
 				if (withinbounds(slot, pt)):
 					print "Adding game symbol to: row:" + str(r) + " / col:" + str(c)
 					self.board.play(self.player_symbols[self.curplayer], c)
+					self.Refresh() # force a redraw of the panel
                                         if self.board.fourinarow == self.player_symbols[self.curplayer]:
                                                 print 'four in a row'
-                                                self.parent.IN_GAME = 0
-                                                wx.MessageBox('Til hamingju tu vannst') #prentar ádur en hún teiknar disk.
-                                                
+                                                self.parent.IN_GAME = False
+                                                wx.MessageBox('Til hamingju tu vannst')
 					# --- eftir ad koma ntowin in í evaluate fallid (athugar bara 4 í röd) 
 					# XXX: if player has won, use wx.MessageBox to congratulate player (how many moves?)
 					self.curplayer += 1
-					if (self.curplayer >= self.nplayers):
-						self.curplayer = 0
+		if (self.curplayer >= self.nplayers):
+			self.curplayer = 0
 
-		self.Refresh() # force a redraw of the panel
-		# XXX: now curplayer is the next one, are we playing against a computer?
-		#      ... where do we make the computer play?  Here? self.computer.play() ?
-		# Muna að kalla þá aftur í self.Refresh() til að endurteikna skjáinn eftir að tölvan hefur gert
+		if (self.computer): # we're playing against a computer! we should have a callback function, expecting the computer's symbol!
+			try:
+				self.computer_cb(self.player_symbols[self.curplayer])
+				self.curplayer += 1
+			except Exception as e:
+				wx.MessageBox('Exception: ' + str(e))
+			self.Refresh() # force a redraw of the panel
 
+		if (self.curplayer >= self.nplayers):
+			self.curplayer = 0
 
 	def OnMovement(self, event):
 		pt = event.GetPosition() # position tuple

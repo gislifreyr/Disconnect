@@ -227,7 +227,7 @@ class computer:
 					break
 		return M
  
-	def play(self, symbol): #XXX: smá hax að þetta noti ekki board.play
+	def play(self, symbol):
 		if (self.board.freespaces == 0): # ^ ^ ^
 			print "BOARD IS FULL!"
 			return False

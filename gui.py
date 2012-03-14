@@ -10,9 +10,11 @@ class GUIDisconnect(wx.Frame):
 	def __init__(self, parent, id, title):
 		"""Constructor"""
 		wx.Frame.__init__(self, parent, id, title, size=(600,450),)
-		self.IN_GAME = 0 # THIS DEFAULTS TO 0
+		self.IN_GAME = False
+		self.HAS_COMPUTER = False
+		self.computer = None
 
-		self.SetBackgroundColour('#A32076') # please change asap!!!
+		self.SetBackgroundColour('#dddddd')
 		initpos = 10;
 
 		afbrigdi_label = wx.StaticText(self, -1, 'Afbrigði', pos=(10, initpos))
@@ -32,7 +34,7 @@ class GUIDisconnect(wx.Frame):
 
 		opponent_lable = wx.StaticText(self, -1, 'Andstæðingur', pos=(10, initpos))
 		initpos += 17
-		self.opponent = wx.ComboBox(self, -1, size=(125, -1), value='Mennskur', pos=(10,initpos), choices=['Mennskur', 'Tölva'], style=wx.CB_READONLY)
+		self.opponent = wx.ComboBox(self, -1, size=(125, -1), value='Mennskur', pos=(10,initpos), choices=['Mennskur', u'Tölva'], style=wx.CB_READONLY)
 		initpos += 30
 		start = wx.Button(self, -1, 'Spila', size=(100, -1), pos=(10, initpos))
 
@@ -74,6 +76,12 @@ class GUIDisconnect(wx.Frame):
 		menubar.Append(GameMenu, '&Game')
 		menubar.Append(HelpMenu, '&Help')
 		self.SetMenuBar(menubar)
+
+	def Computer(self, symbol): # this method causes the computer to play
+		assert(self.HAS_COMPUTER is not False)
+		assert(self.computer is not None)
+		wx.MessageBox("Computer's turn now!");
+		self.computer.play(self.board, symbol)
 		
 	def OnQuit(self, e):
 		self.Close()	
@@ -99,13 +107,19 @@ class GUIDisconnect(wx.Frame):
 			wx.MessageBox('Villa! Skífufjöldi þarf að vera heiltala!', 'Error', wx.OK | wx.ICON_INFORMATION)
 			return
 		print "ntowin=" + str(ntowin)
-		if self.Against() == 'Mennskur':        # --- ekki alveg klár á hvort þetta sé besta leiðin
-                        self.board = game.board(self.size.GetValue(), ntowin)
-                        self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcode 2 players !
+		if self.Against() == 'Mennskur':        # --- ekki alveg klár á hvort þetta sé besta leiðin | ses: jamm, þetta er ekki fallegt en sleppur :-)
+                        self.board = game.board(self.size.GetValue(), ntowin) 
+                        self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcoding 2 players !
                         self.panel = self.gboard
-                        self.IN_GAME = 1
-                #if self.Against() == 'Tölva': TBD
-                        # ---TBD---
+                        self.IN_GAME = True
+                if self.Against() == u'Tölva': # XXX: Erfiðleikastig?
+			self.HAS_COMPUTER = True
+                        self.board = game.board(self.size.GetValue(), ntowin) 
+                        self.gboard = wxgame.GraphicalBoard(self, self.board, 2) # XXX: hardcoding 2 players !
+			self.gboard.computer = True
+			self.gboard.computer_cb = self.Computer
+			self.computer = game.computer(self.board, 3) # XXX: hardcoded difficulty = 3 (same as in constructor of game.computer)
+                        self.IN_GAME = True
                         
 	def ViewHelp(self, event):
 		h = open('help', 'r')
