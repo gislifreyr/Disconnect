@@ -123,7 +123,7 @@ class GraphicalBoard(wx.Panel):
 		if (self.curplayer >= self.nplayers):
 			self.curplayer = 0
 
-		if (self.computer): # we're playing against a computer! we should have a callback function, expecting the computer's symbol!
+		if (self.computer and self.parent.IN_GAME): # we're playing against a computer! we should have a callback function, expecting the computer's symbol!
 			try:
 				self.computer_cb(self.player_symbols[self.curplayer])
 				self.curplayer += 1

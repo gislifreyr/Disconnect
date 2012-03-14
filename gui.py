@@ -81,7 +81,7 @@ class GUIDisconnect(wx.Frame):
 		assert(self.HAS_COMPUTER is not False)
 		assert(self.computer is not None)
 		wx.MessageBox("Computer's turn now!");
-		self.computer.play(self.board, symbol)
+		self.computer.play(symbol)
 		
 	def OnQuit(self, e):
 		self.Close()	
